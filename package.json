@@ -7,6 +7,10 @@
     "test": "mocha",
     "coverage": "istanbul cover _mocha -- -u exports -R spec"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:imjoshholloway/bookshelf-model-loader.git"
+  },
   "keywords": [
     "bookshelf",
     "autoload",
