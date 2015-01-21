@@ -1,0 +1,22 @@
+{
+  "name": "bookshelf-model-loader",
+  "version": "0.9.0",
+  "description": "A opinionated Bookshelf model loader with bookshelf-modelbase",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bookshelf",
+    "autoload",
+    "modelbase",
+    "loader"
+  ],
+  "author": "Josh Holloway <josh@imjoshholloway.co.uk>",
+  "license": "MIT",
+  "dependencies": {
+    "bookshelf-modelbase": "^1.5.1",
+    "lodash": "^2.4.1",
+    "require-tree": "^1.0.1"
+  }
+}
