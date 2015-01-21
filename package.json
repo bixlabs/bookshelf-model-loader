@@ -4,7 +4,8 @@
   "description": "A opinionated Bookshelf model loader with bookshelf-modelbase",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha",
+    "coverage": "istanbul cover _mocha -- -u exports -R spec"
   },
   "keywords": [
     "bookshelf",
@@ -18,5 +19,16 @@
     "bookshelf-modelbase": "^1.5.1",
     "lodash": "^2.4.1",
     "require-tree": "^1.0.1"
+  },
+  "devDependencies": {
+    "bookshelf": "^0.7.9",
+    "chai": "1.10.x",
+    "istanbul": "0.3.x",
+    "knex": "^0.7.3",
+    "mocha": "2.1.x",
+    "sqlite3": "^3.0.4"
+  },
+  "engines": {
+    "node": ">=0.10.30"
   }
 }

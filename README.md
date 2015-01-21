@@ -17,8 +17,8 @@ During your application's startup phase load the module calling the `init` metho
 var bookshelf = require('bookshelf')(knex);
 
 require('bookshelf-model-loader').init(bookshelf, {
-    plugins: ['virtuals', 'visibility', 'registry'], // Optional - Any bookshelf plugins to load. Defaults to all
-    excludes: [], // Optional - Names of files to ignore
+    plugins: ['virtuals', 'visibility', 'registry'], // Optional - Bookshelf plugins to load. Defaults to loading the 'virtuals', 'visibility' & 'registry' plugins
+    excludes: [], // Optional - files to ignore
     path: __dirname + '/models' // Required
 });
 ```
@@ -27,4 +27,30 @@ Then, elsewhere in the application simply:
 
 ```
 var Models = require('bookshelf-model-loader');
+```
+
+## Creating Models
+Models should export an object with a key of the name you'd like to reference the model as.
+
+For example: `./models/user.js`;
+
+```
+
+'use strict';
+var Models = require('bookshelf-model-loader');
+
+var User = Models.Base.extend({
+  tableName: 'users'
+});
+
+module.exports = {
+  User: Models.Bookshelf.model('User', User)
+};
+```
+The model will then be available:
+
+```
+var Models = require('bookshelf-model-loader);
+
+Models.User.findOne();
 ```
