@@ -47,6 +47,14 @@ describe('bookshelf-model-loader tests', function () {
     expect(Models.User).to.exist();
   });
 
+  it('should have a `paginate` method', function () {
+    var Models = require('../').init(bookshelf, {
+      path: __dirname + '/models'
+    });
+
+    expect(Models.User.paginate).to.exist();
+  });
+
 });
 
 
