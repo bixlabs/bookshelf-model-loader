@@ -3,7 +3,7 @@
 An opinionated model loader for [Bookshelf](http://bookshelfjs.org/).
 Inspired by [Ghost](https://github.com/TryGhost/Ghost).
 
-Also includes [bookshelf-modelbase](https://www.npmjs.com/package/bookshelf-modelbase).
+Also includes [bookshelf-modelbase](https://www.npmjs.com/package/bookshelf-modelbase) which the `Base` model.
 
 ## Installation
 
@@ -13,19 +13,20 @@ Also includes [bookshelf-modelbase](https://www.npmjs.com/package/bookshelf-mode
 
 During your application's startup phase load the module calling the `init` method. Pass your bookshelf instance in along with the `path` to the directory you want to autoload your models from.
 
-```
+```javascript
 var bookshelf = require('bookshelf')(knex);
 
 require('bookshelf-model-loader').init(bookshelf, {
     plugins: ['virtuals', 'visibility', 'registry'], // Optional - Bookshelf plugins to load. Defaults to loading the 'virtuals', 'visibility' & 'registry' plugins
     excludes: [], // Optional - files to ignore
     path: __dirname + '/models' // Required
+    modelOptions: {}, // Optional - options to pass to the base model
 });
 ```
 
 Then, elsewhere in the application simply:
 
-```
+```javascript
 var Models = require('bookshelf-model-loader');
 ```
 
@@ -34,8 +35,7 @@ Models should export an object with a key of the name you'd like to reference th
 
 For example: `./models/user.js`;
 
-```
-
+```javascript
 'use strict';
 var Models = require('bookshelf-model-loader');
 
@@ -49,8 +49,37 @@ module.exports = {
 ```
 The model will then be available:
 
-```
-var Models = require('bookshelf-model-loader);
+```javascript
+var Models = require('bookshelf-model-loader');
 
 Models.User.findOne();
+```
+
+## Soft Deletes
+All models provide soft deletes by default. As a result, all tables are required to have a `deleted_at` column. However, you can disable soft deletes on a per model or global basis.
+
+### Per Model
+To disable soft deletes for a particular model simply add `soft: false` to the model declaration.
+
+```javascript
+var User = Models.Base.extend({
+  tableName: 'users',
+  soft: false
+});
+```
+
+### Global
+To disable soft deletes for all models by default add the `soft: false` flag to the `modelOptions` object when calling the `init()` method.
+
+```javascript
+var bookshelf = require('bookshelf')(knex);
+
+require('bookshelf-model-loader').init(bookshelf, {
+    plugins: ['virtuals', 'visibility', 'registry'], // Optional - Bookshelf plugins to load. Defaults to loading the 'virtuals', 'visibility' & 'registry' plugins
+    excludes: [], // Optional - files to ignore
+    path: __dirname + '/models', // Required
+    modelOptions: {
+      soft: false
+    }
+});
 ```

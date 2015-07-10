@@ -14,29 +14,28 @@ describe('bookshelf-model-loader tests', function () {
 
   before(function (done) {
     bookshelf.knex.schema.dropTableIfExists('users')
-    .then(function () {
-      return bookshelf.knex.schema.createTable('users', function(table) {
-          table.increments()
-          table.integer('account_id')
-          table.timestamps()
-          table.timestamp('deleted_at')
-        });
-    })
-    .then(function () {
-      return bookshelf.knex('users').insert([{
-        id: 1,
-        created_at: new Date(),
-        updated_at: new Date(),
-      }, {
-        id: 2,
-        created_at: new Date(),
-        updated_at: new Date(),
-        deleted_at: new Date(),
-      }
-    ]).then(function () {
+      .then(function () {
+        return bookshelf.knex.schema.createTable('users', function(table) {
+            table.increments()
+            table.integer('account_id')
+            table.timestamps()
+            table.timestamp('deleted_at')
+          });
+      })
+      .then(function () {
+        return bookshelf.knex('users').insert([{
+          id: 1,
+          created_at: new Date(),
+          updated_at: new Date(),
+        }, {
+          id: 2,
+          created_at: new Date(),
+          updated_at: new Date(),
+          deleted_at: new Date(),
+        }])
+      }).then(function () {
         return done();
       });
-    });
   });
 
   it('should throw an error if the `path` isn\'t defined', function () {
@@ -113,7 +112,7 @@ describe('bookshelf-model-loader tests', function () {
   });
 
 
-  it ('should soft delete the user', function (done) {
+  it('should soft delete the user', function (done) {
     var Models = require('../').init(bookshelf, {
       path: __dirname + '/models'
     })
@@ -132,7 +131,7 @@ describe('bookshelf-model-loader tests', function () {
   })
 
 
-  it ('not return a soft deleted user', function (done) {
+  it('not return a soft deleted user', function (done) {
     var Models = require('../').init(bookshelf, {
       path: __dirname + '/models'
     })
@@ -144,4 +143,18 @@ describe('bookshelf-model-loader tests', function () {
 
   })
 
+
+  it('if force delete is true the record should be deleted', function (done) {
+    var Models = require('../').init(bookshelf, {
+      path: __dirname + '/models'
+    })
+
+    Models.User.destroy({id: 1, forceDelete: true}).then(function (user) {
+      Models.User.findOne({id: 1}, {withTrashed: true}).then(function (user) {
+        expect(user).to.be.null();
+        done();
+      })
+    });
+
+  })
 });

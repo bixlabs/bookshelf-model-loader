@@ -12,7 +12,8 @@ module.exports = {
     options = _.defaults(options || {}, {
       excludes: [],
       plugins: ['virtuals', 'visibility', 'registry'],
-      includeBase: true
+      includeBase: true,
+      modelOptions: {},
     });
 
     if (!options.path) {
@@ -28,7 +29,7 @@ module.exports = {
 
     // Load the base Model Instance
     if (options.includeBase) {
-      self.Base = self.Base || require('./lib/base')(bookshelf);
+      self.Base = self.Base || require('./lib/base')(bookshelf, options.modelOptions);
     }
 
     // Require all files in this directory
