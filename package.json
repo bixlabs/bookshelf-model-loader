@@ -1,6 +1,6 @@
 {
   "name": "bookshelf-model-loader",
-  "version": "0.9.7",
+  "version": "0.9.8",
   "description": "A opinionated Bookshelf model loader with bookshelf-modelbase",
   "main": "index.js",
   "scripts": {
